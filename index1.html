@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Vanshika, with love</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Pinyon+Script&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --ink:       #0d0608;
+  --wine:      #4a0f1a;
+  --rose:      #8b3a4a;
+  --dusty:     #c49a9a;
+  --petal:     #e8c4c4;
+  --parchment: #f5ede0;
+  --cream:     #faf4ec;
+  --amber:     #c8824a;
+  --script:    #6b2535;
+}
+
+html,body{min-height:100%;background:var(--ink);overflow-x:hidden;cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402z' fill='%238b3a4a' opacity='0.6'/%3E%3C/svg%3E") 12 12, auto;}
+
+body::before{
+  content:'';position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.06'/%3E%3C/svg%3E");
+  opacity:.5;mix-blend-mode:overlay;
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 50%, transparent 35%, rgba(5,2,4,.75) 100%);
+}
+
+#bg{position:fixed;inset:0;z-index:0;}
+
+/* Changed from falling petals to rising embers */
+.ember{
+  position:fixed;pointer-events:none;z-index:3;
+  font-size:1rem;opacity:0; color: var(--amber);
+  text-shadow: 0 0 8px rgba(200,130,74,.8);
+  animation:emberRise linear infinite;
+}
+@keyframes emberRise{
+  0%  {opacity:0;transform:translateY(105vh) rotate(0deg) translateX(0) scale(0.5);}
+  10% {opacity:.7;}
+  80% {opacity:.4;}
+  100%{opacity:0;transform:translateY(-5vh) rotate(var(--spin)) translateX(var(--sway)) scale(1.2);}
+}
+
+#app{
+  position:relative;z-index:10;
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:3rem 1.2rem;
+}
+
+.screen{display:none;flex-direction:column;align-items:center;text-align:center;width:100%;max-width:640px;}
+.screen.active{display:flex;}
+.screen.in{animation:screenIn .9s cubic-bezier(.22,1,.36,1) both;}
+@keyframes screenIn{
+  from{opacity:0;transform:translateY(28px) scale(.98);}
+  to  {opacity:1;transform:translateY(0) scale(1);}
+}
+
+.script-font{
+  font-family:'Pinyon Script',cursive;
+  color:var(--rose);font-size:clamp(2rem,8vw,3.8rem);
+  line-height:1;
+  text-shadow:0 2px 20px rgba(139,58,74,.4);
+}
+.eyebrow{
+  font-family:'Cormorant Garamond',serif;
+  font-size:.65rem;letter-spacing:.38em;text-transform:uppercase;
+  color:var(--rose);opacity:.8;margin-bottom:.6rem;
+}
+h1.title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.4rem,8vw,4.2rem);font-weight:300;
+  color:var(--parchment);letter-spacing:.06em;
+  line-height:1.1;
+  text-shadow:0 0 60px rgba(200,130,74,.2);
+}
+.body-fell{
+  font-family:'IM Fell English',serif;
+  color:var(--dusty);
+  font-size:clamp(.95rem,2.5vw,1.1rem);
+  line-height:1.85;
+  font-style:italic;
+}
+
+.rule{
+  display:flex;align-items:center;gap:.8rem;
+  width:100%;max-width:340px;margin:1.2rem auto;
+}
+.rule-line{flex:1;height:1px;background:linear-gradient(to right,transparent,rgba(196,154,154,.35),transparent);}
+.rule-diamond{
+  width:6px;height:6px;background:var(--rose);
+  transform:rotate(45deg);flex-shrink:0;opacity:.7;
+}
+
+.polaroid{
+  background:linear-gradient(155deg,rgba(18,8,10,.97),rgba(12,5,7,.99));
+  border:1px solid rgba(196,154,154,.15);
+  padding:2rem 2.2rem 2.2rem;
+  width:100%;position:relative;
+  box-shadow:0 20px 80px rgba(0,0,0,.7),0 2px 0 rgba(196,154,154,.06) inset;
+}
+.polaroid::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(to right,transparent,rgba(196,154,154,.3),transparent);
+}
+.polaroid.torn::after{
+  content:'';position:absolute;top:-4px;left:0;right:0;height:5px;
+  background:linear-gradient(to right,var(--ink),rgba(18,8,10,.9),var(--ink));
+  clip-path:polygon(0 100%,2% 0,4% 80%,7% 10%,9% 70%,12% 0,15% 90%,18% 20%,21% 75%,24% 5%,27% 85%,30% 15%,33% 95%,36% 25%,39% 80%,42% 0,45% 90%,48% 30%,51% 70%,54% 10%,57% 85%,60% 20%,63% 75%,66% 5%,69% 90%,72% 15%,75% 80%,78% 0,81% 95%,84% 25%,87% 70%,90% 10%,93% 85%,96% 15%,98% 60%,100% 0,100% 100%);
+}
+.annotation{
+  font-family:'Pinyon Script',cursive;
+  font-size:clamp(1.1rem,3vw,1.4rem);
+  color:var(--rose);opacity:.7;
+  position:absolute;
+}
+.ann-topleft{top:.8rem;left:1rem;}
+.ann-botright{bottom:.8rem;right:1rem;}
+
+.clue-num{
+  font-family:'Cormorant Garamond',serif;font-size:5rem;font-weight:300;
+  color:rgba(196,154,154,.05);position:absolute;top:0;right:1rem;
+  line-height:1;user-select:none;pointer-events:none;
+}
+
+.progress{
+  display:flex;gap:8px;margin-bottom:1.8rem;
+  align-items:center;justify-content:center;
+}
+.pip{
+  width:24px;height:2px;background:rgba(196,154,154,.2);
+  transition:all .5s ease;
+}
+.pip.done{background:rgba(139,58,74,.6);}
+.pip.active{background:var(--rose);box-shadow:0 0 8px rgba(139,58,74,.5);width:36px;}
+
+.clue-label{
+  font-family:'Cormorant Garamond',serif;font-size:.6rem;
+  letter-spacing:.35em;text-transform:uppercase;
+  color:var(--rose);opacity:.65;margin-bottom:.9rem;
+}
+.clue-body{
+  font-family:'IM Fell English',serif;font-style:italic;
+  font-size:clamp(1rem,2.6vw,1.15rem);line-height:1.85;
+  color:var(--dusty);text-align:left;
+  border-left:1px solid rgba(139,58,74,.3);
+  padding-left:1.2rem;margin-bottom:1.4rem;
+}
+.clue-body em{color:var(--petal);font-style:normal;font-weight:500;}
+.question-text{
+  font-family:'Cormorant Garamond',serif;font-weight:400;
+  font-size:clamp(1rem,2.8vw,1.2rem);color:var(--parchment);
+  margin-bottom:1.2rem;letter-spacing:.02em;
+}
+
+.options{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;width:100%;}
+.opt{
+  font-family:'Cormorant Garamond',serif;font-size:.82rem;font-weight:500;
+  letter-spacing:.06em;color:var(--dusty);
+  background:rgba(139,58,74,.06);
+  border:1px solid rgba(196,154,154,.15);
+  padding:.85rem .6rem;cursor:pointer;
+  transition:all .25s ease;line-height:1.4;
+  position:relative;overflow:hidden;
+}
+.opt::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(139,58,74,.15),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.opt:hover:not(:disabled){
+  border-color:rgba(196,154,154,.4);color:var(--petal);
+  transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(0,0,0,.4);
+}
+.opt:hover:not(:disabled)::before{opacity:1;}
+.opt.correct{
+  background:rgba(60,100,60,.25);border-color:rgba(120,180,120,.4);color:#b8ddb8;
+  animation:popCorrect .5s ease;
+}
+.opt.wrong{
+  background:rgba(100,20,20,.25);border-color:rgba(180,80,80,.35);color:#c49090;
+  animation:shake .35s ease;
+}
+.opt:disabled{cursor:default;}
+@keyframes popCorrect{
+  0%{transform:scale(1);}50%{transform:scale(1.03);}100%{transform:scale(1);}
+}
+@keyframes shake{
+  0%,100%{transform:translateX(0);}
+  25%{transform:translateX(-5px);}75%{transform:translateX(5px);}
+}
+
+.fb{
+  font-family:'IM Fell English',serif;font-style:italic;
+  font-size:.88rem;line-height:1.6;min-height:1.2rem;
+  margin-top:.9rem;color:rgba(196,154,154,.5);
+  transition:all .4s;
+}
+.fb.ok{color:#9dc49d;}
+.fb.no{color:#c49090;}
+
+.score-bar{
+  font-family:'Cormorant Garamond',serif;font-size:.68rem;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(196,154,154,.4);margin-top:1rem;
+}
+.score-bar span{color:var(--rose);}
+
+.btn-main{
+  font-family:'Cormorant Garamond',serif;font-size:.78rem;
+  font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink);
+  background:linear-gradient(135deg,#b87060,#c8824a,#a05040);
+  border:none;padding:.9rem 2.8rem;cursor:pointer;
+  position:relative;overflow:hidden;margin-top:1.6rem;
+  transition:transform .25s,box-shadow .25s;
+  box-shadow:0 4px 24px rgba(200,130,74,.2);
+}
+.btn-main::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(255,255,255,.12),transparent);
+}
+.btn-main:hover{transform:translateY(-3px);box-shadow:0 10px 40px rgba(200,130,74,.35);}
+.btn-main:active{transform:translateY(0);}
+
+.btn-ghost{
+  font-family:'Cormorant Garamond',serif;font-size:.7rem;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(196,154,154,.5);background:transparent;
+  border:1px solid rgba(196,154,154,.2);padding:.6rem 2rem;
+  cursor:pointer;margin-top:.8rem;
+  transition:all .25s;
+}
+.btn-ghost:hover{color:var(--dusty);border-color:rgba(196,154,154,.4);}
+.btn-ghost.borderless{border:none; padding:.4rem 1rem;}
+.btn-ghost.borderless:hover{border-color:transparent; color:var(--amber);}
+
+.letter-wrap{
+  position:relative;width:100%;
+  background:linear-gradient(160deg,rgba(20,8,11,.98),rgba(10,4,6,.99));
+  border:1px solid rgba(196,154,154,.18);
+  padding:2.4rem 2.4rem 2.8rem;
+  box-shadow:0 30px 100px rgba(0,0,0,.8);
+  overflow:hidden;
+}
+.letter-wrap::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c49a9a' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events:none;
+}
+.letter-rule{
+  width:100%;height:1px;
+  background:linear-gradient(to right,transparent,rgba(196,154,154,.25),transparent);
+  margin:1.2rem 0;
+}
+.letter-body{
+  font-family:'IM Fell English',serif;font-size:clamp(1rem,2.6vw,1.15rem);
+  line-height:1.9;color:var(--dusty);font-style:italic;
+  text-align:left;
+}
+.letter-body strong{color:var(--petal);font-style:normal;font-weight:400;}
+
+.reveal-title{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:clamp(2rem,7vw,3.4rem);letter-spacing:.1em;
+  color:var(--parchment);
+  text-shadow:0 0 40px rgba(200,130,74,.3),0 0 80px rgba(139,58,74,.2);
+  animation:breathe 3s ease-in-out infinite;
+}
+@keyframes breathe{
+  0%,100%{text-shadow:0 0 40px rgba(200,130,74,.3);}
+  50%    {text-shadow:0 0 80px rgba(200,130,74,.55),0 0 120px rgba(139,58,74,.3);}
+}
+
+.times{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin:1.4rem 0;}
+.time-pill{
+  border:1px solid rgba(196,154,154,.2);
+  background:rgba(139,58,74,.08);
+  padding:.8rem 1.6rem;text-align:center;min-width:140px;
+}
+.tp-time{
+  font-family:'Cormorant Garamond',serif;font-size:1.05rem;
+  font-weight:500;color:var(--parchment);letter-spacing:.08em;
+}
+.tp-tz{
+  font-family:'Cormorant Garamond',serif;font-size:.62rem;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--rose);margin-top:.2rem;opacity:.75;
+}
+
+.yes-btn{
+  font-family:'Pinyon Script',cursive;font-size:2.2rem;
+  color:var(--parchment);
+  background:linear-gradient(135deg,var(--wine),#6b1a2a,#3d0a14);
+  border:1px solid rgba(196,154,154,.25);
+  padding:1rem 4rem;cursor:pointer;
+  position:relative;overflow:hidden;margin-top:1.8rem;
+  transition:all .35s ease;
+  box-shadow:0 0 40px rgba(74,15,26,.5),inset 0 1px 0 rgba(255,255,255,.07);
+}
+.yes-btn::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 50% -20%,rgba(255,200,200,.1),transparent 60%);
+}
+.yes-btn:hover{
+  transform:scale(1.04) translateY(-3px);
+  box-shadow:0 0 80px rgba(139,58,74,.6),0 20px 60px rgba(0,0,0,.5);
+  border-color:rgba(196,154,154,.45);
+}
+
+.celebration-burst{
+  position:fixed;z-index:999;pointer-events:none;
+  animation:confettiFall 2.5s ease-out forwards;
+  font-size:1.4rem;
+}
+@keyframes confettiFall{
+  0%  {opacity:1;transform:translateY(0) rotate(0deg) scale(1);}
+  100%{opacity:0;transform:translateY(110vh) rotate(var(--r)) scale(.5) translateX(var(--sx));}
+}
+
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--ink);}
+::-webkit-scrollbar-thumb{background:rgba(139,58,74,.4);border-radius:2px;}
+
+/* countdown */
+.cd-block{
+  display:flex;flex-direction:column;align-items:center;
+  background:linear-gradient(160deg,rgba(20,8,11,.97),rgba(10,4,6,.99));
+  border:1px solid rgba(196,154,154,.15);
+  padding:.9rem 1.1rem;min-width:68px;
+  box-shadow:0 8px 30px rgba(0,0,0,.5);
+}
+.cd-num{
+  font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;
+  color:var(--parchment);letter-spacing:.04em;line-height:1;
+  text-shadow:0 0 20px rgba(200,130,74,.3);
+  transition:all .3s ease;
+}
+.cd-num.tick{animation:cdTick .3s ease;}
+@keyframes cdTick{
+  0%{transform:translateY(-4px);opacity:.4;}
+  100%{transform:translateY(0);opacity:1;}
+}
+.cd-lbl{
+  font-family:'Cormorant Garamond',serif;font-size:.55rem;
+  letter-spacing:.28em;text-transform:uppercase;
+  color:var(--rose);opacity:.65;margin-top:.3rem;
+}
+.cd-sep{
+  font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;
+  color:rgba(139,58,74,.5);align-self:center;padding-bottom:.8rem;
+  animation:blink 1s step-start infinite;
+}
+@keyframes blink{0%,100%{opacity:.5;}50%{opacity:.15;}}
+
+@media(max-width:480px){
+  .options{grid-template-columns:1fr;}
+  .polaroid{padding:1.4rem 1.2rem 1.8rem;}
+  .letter-wrap{padding:1.6rem 1.4rem 2rem;}
+  .times{gap:.6rem;}
+  .time-pill{min-width:120px;}
+}
+</style>
+</head>
+<body>
+<audio id="bg-audio" loop preload="auto">
+  <source src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=cinematic-atmosphere-score-2-22136.mp3" type="audio/mpeg">
+</audio>
+
+<canvas id="bg"></canvas>
+<div id="app">
+
+<div class="screen active" id="s0">
+  <p class="eyebrow">a note, carefully kept, for</p>
+  <div class="script-font" style="margin-bottom:.4rem">Vanshika</div>
+  <div class="rule"><div class="rule-line"></div><div class="rule-diamond"></div><div class="rule-line"></div></div>
+  <div class="polaroid torn" style="margin-bottom:1.4rem;">
+    <div class="annotation ann-topleft">for you ♡</div>
+    <p class="body-fell" style="text-align:center; margin-bottom:1rem;">
+      I've been holding something close &mdash; a film that lives in my chest<br>the way you do.<br><br>
+      I'm not going to simply <em style="color:var(--petal);font-style:normal;">tell</em> you what it is.<br><br>
+      I've written five clues for you, each one a small piece of a world I want to share with you. Solve it. Find the film. And find what I want to ask you at the end.
+    </p>
+    <div style="display:flex;align-items:center;gap:.6rem;justify-content:center;margin-top:.4rem;">
+      <div style="height:1px;flex:1;background:linear-gradient(to right,transparent,rgba(196,154,154,.2),transparent);"></div>
+      <span style="font-family:'Pinyon Script',cursive;color:var(--rose);font-size:1.4rem;opacity:.6">always yours</span>
+      <div style="height:1px;flex:1;background:linear-gradient(to right,transparent,rgba(196,154,154,.2),transparent);"></div>
+    </div>
+  </div>
+  <button class="btn-main" onclick="startExperience()">Begin &nbsp;&#8594;</button>
+</div>
+
+<div class="screen" id="s1"></div>
+<div class="screen" id="s2"></div>
+<div class="screen" id="s3"></div>
+<div class="screen" id="s4"></div>
+<div class="screen" id="s5"></div>
+
+<div class="screen" id="s6">
+  <p class="eyebrow">all five clues in your hands</p>
+  <div class="script-font" style="font-size:clamp(1.5rem,5vw,2.4rem);margin-bottom:.4rem">what is the film?</div>
+  <div class="rule"><div class="rule-line"></div><div class="rule-diamond"></div><div class="rule-line"></div></div>
+  <div class="polaroid" style="margin-bottom:1rem;">
+    <div class="clue-num">?</div>
+    <p class="clue-body">
+      A city drowning in its own shadows. A hero with one unbreakable rule. A villain who believed in nothing &mdash; and somehow meant <em>everything</em>.<br><br>
+      Chicago streets dressed in fiction. IMAX cameras. A posthumous Oscar. Two boats and a moral reckoning.<br><br>
+      What is the film?
+    </p>
+    <div class="options" id="final-opts">
+      <button class="opt" onclick="finalAnswer(this,'w')">Batman Begins</button>
+      <button class="opt" onclick="finalAnswer(this,'c')">The Dark Knight</button>
+      <button class="opt" onclick="finalAnswer(this,'w')">The Dark Knight Rises</button>
+      <button class="opt" onclick="finalAnswer(this,'w')">Batman v Superman</button>
+    </div>
+    <p class="fb" id="final-fb"></p>
+  </div>
+  <div class="score-bar">You answered <span id="score6">0</span> of 5 clues correctly</div>
+</div>
+
+<div class="screen" id="s7">
+  <p class="eyebrow">you found it &#10022;</p>
+  <div style="margin-bottom:1.2rem;">
+    <div class="reveal-title">The Dark Knight</div>
+    <p style="font-family:'Cormorant Garamond',serif;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--rose);opacity:.6;margin-top:.4rem;">Christopher Nolan &nbsp;&middot;&nbsp; 2008</p>
+  </div>
+  <div class="rule"><div class="rule-line"></div><div class="rule-diamond"></div><div class="rule-line"></div></div>
+  <div class="letter-wrap" style="margin-bottom:1.2rem;">
+    <div class="annotation ann-topleft" style="opacity:.4;font-size:1rem;">with love,</div>
+    <div class="letter-rule"></div>
+    <p class="letter-body">
+      This is the film I've watched more times than I can count. The one that made me fall in love with cinema &mdash; with <em style="color:var(--petal)">the way a story can hold you in the dark and not let go.</em><br><br>
+      And now, across every kilometre between us, I want to watch it <strong>with you, Vanshika.</strong><br><br>
+      Same screen. Different skies. But the same night &mdash; together.
+    </p>
+    <div class="letter-rule"></div>
+    <div class="script-font" style="font-size:clamp(1.3rem,4vw,1.9rem);margin:1rem 0 .4rem;text-align:center;">
+      will you be my date?
+    </div>
+    <div class="times">
+      <div class="time-pill">
+        <div class="tp-time">Monday &nbsp;&middot;&nbsp; 5:00 PM</div>
+        <div class="tp-tz">India &nbsp;&middot;&nbsp; IST</div>
+      </div>
+      <div class="time-pill" style="opacity:.7;border-style:dashed;">
+        <div class="tp-time">Monday &nbsp;&middot;&nbsp; 10:30 PM</div>
+        <div class="tp-tz">Melbourne &nbsp;&middot;&nbsp; AEDT</div>
+      </div>
+    </div>
+    <p class="letter-body" style="text-align:center;font-size:.92rem;color:rgba(196,154,154,.45);margin-top:.6rem;">
+      I'll queue up the film. You bring yourself. That's enough.
+    </p>
+    <div class="letter-rule"></div>
+    <div class="annotation ann-botright" style="opacity:.35;font-size:1rem;">always &#9825;</div>
+  </div>
+  <button class="yes-btn" onclick="sayYes()">Yes, a thousand times yes</button>
+  <button class="btn-ghost borderless" onclick="sayYes()" style="font-size:.65rem;opacity:.6;margin-top:.5rem;">(also yes, obviously)</button>
+  <br>
+  <button class="btn-ghost borderless" onclick="reschedule()" style="font-size:.6rem;opacity:.4;margin-top:1rem;">I'm busy saving Gotham (Let's reschedule)</button>
+</div>
+
+<div class="screen" id="s8">
+  <p class="eyebrow">it's a date, darling</p>
+  <div class="script-font" style="font-size:clamp(2rem,7vw,3.5rem);line-height:1.1;margin-bottom:.3rem">she said yes</div>
+  <div class="rule"><div class="rule-line"></div><div class="rule-diamond"></div><div class="rule-line"></div></div>
+  <div class="letter-wrap">
+    <div class="letter-rule"></div>
+    <p class="letter-body" style="text-align:center;">
+      <strong>Vanshika,</strong><br><br>
+      Monday is going to be the best evening. The Gotham skyline, the greatest film score ever written, and &mdash; somewhere across the world &mdash; <em style="color:var(--petal)">you.</em><br><br>
+      The distance doesn't stand a chance.
+    </p>
+    <div class="letter-rule"></div>
+    <div style="border-left:1px solid rgba(139,58,74,.3);padding:.8rem 1.2rem;text-align:left;margin:1rem 0;">
+      <p style="font-family:'IM Fell English',serif;font-style:italic;font-size:1rem;line-height:1.7;color:var(--dusty);">
+        "You either die a hero, or you live long enough to see yourself become the villain."
+      </p>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rose);opacity:.6;margin-top:.5rem;">&#8212; The Dark Knight</p>
+    </div>
+    <div class="letter-rule"></div>
+    <div class="times" style="margin:.8rem 0;">
+      <div class="time-pill">
+        <div class="tp-time">Monday &nbsp;&middot;&nbsp; 5:00 PM</div>
+        <div class="tp-tz">India &nbsp;&middot;&nbsp; IST</div>
+      </div>
+      <div class="time-pill" style="opacity:.7;">
+        <div class="tp-time">Monday &nbsp;&middot;&nbsp; 10:30 PM</div>
+        <div class="tp-tz">Melbourne &nbsp;&middot;&nbsp; AEDT</div>
+      </div>
+    </div>
+    <div class="letter-rule"></div>
+    <div class="script-font" style="font-size:1.6rem;text-align:center;margin-top:.6rem;opacity:.6;">see you then &#9825;</div>
+  </div>
+
+  <div style="margin-top:1.6rem;width:100%;">
+    <p class="eyebrow" style="margin-bottom:1rem;">counting down to our date</p>
+    <div id="countdown-grid" style="display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;">
+      <div class="cd-block"><div class="cd-num" id="cd-d">00</div><div class="cd-lbl">days</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block"><div class="cd-num" id="cd-h">00</div><div class="cd-lbl">hours</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block"><div class="cd-num" id="cd-m">00</div><div class="cd-lbl">mins</div></div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-lbl">secs</div></div>
+    </div>
+    <p id="cd-done" style="display:none;font-family:'Pinyon Script',cursive;font-size:1.8rem;color:var(--rose);margin-top:.8rem;">It's time &#9825;</p>
+  </div>
+
+  <div style="margin-top:1.6rem;width:100%;border:1px dashed rgba(196,154,154,.2);padding:1.4rem 1.6rem;background:rgba(139,58,74,.04);position:relative;">
+    <p style="font-family:'Cormorant Garamond',serif;font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:var(--rose);opacity:.65;margin-bottom:.7rem;">don't you dare forget</p>
+    <p class="script-font" style="font-size:clamp(1.2rem,4vw,1.7rem);margin-bottom:.8rem;">check your calendar &#9825;</p>
+    <p style="font-family:'IM Fell English',serif;font-style:italic;font-size:.9rem;color:rgba(196,154,154,.55);line-height:1.7;">
+      Block out Monday evening. Tell no one. It's our night.
+    </p>
+    <div style="margin-top:1rem;display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;">
+      <a id="gcal-link" href="#" target="_blank" style="font-family:'Cormorant Garamond',serif;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(196,154,154,.6);border:1px solid rgba(196,154,154,.2);padding:.55rem 1.4rem;text-decoration:none;transition:all .25s;" onmouseover="this.style.color='var(--dusty)';this.style.borderColor='rgba(196,154,154,.45)'" onmouseout="this.style.color='rgba(196,154,154,.6)';this.style.borderColor='rgba(196,154,154,.2)'">&#43; Google Calendar</a>
+      <a id="ical-link" href="#" download="our-dark-knight-date.ics" style="font-family:'Cormorant Garamond',serif;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(196,154,154,.6);border:1px solid rgba(196,154,154,.2);padding:.55rem 1.4rem;text-decoration:none;transition:all .25s;" onmouseover="this.style.color='var(--dusty)';this.style.borderColor='rgba(196,154,154,.45)'" onmouseout="this.style.color='rgba(196,154,154,.6)';this.style.borderColor='rgba(196,154,154,.2)'">&#43; Apple / iCal</a>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const Q=[
+  {
+    heading:"the city",
+    clue:`Every great story needs a world unto itself. This one was built inside a real American city &mdash; its gothic towers and dark underpasses dressed up as something <em>fictional</em>. Critics called it one of the most convincing urban landscapes in cinema. The real city was chosen because it felt already half-destroyed &mdash; architecturally baroque, morally ambiguous.`,
+    q:"Which real American city primarily stood in for the fictional one?",
+    opts:["New York City","Pittsburgh","Chicago","Philadelphia"],
+    ans:2,
+    fact:"Chicago's architecture &mdash; particularly Lower Wacker Drive &mdash; became the film's beating urban heart."
+  },
+  {
+    heading:"the camera",
+    clue:`The director had an obsession with scale &mdash; the feeling that a city could <em>swallow you whole</em>. To capture it, he insisted on using a camera format almost never used for narrative filmmaking: enormous, unforgiving, capturing six times the detail of standard film. Every scene shot with it was a technical gamble that paid off on screen.`,
+    q:"What pioneering camera format was used for key sequences?",
+    opts:["70mm film","Super 16mm","IMAX","VistaVision"],
+    ans:2,
+    fact:"It was among the first major Hollywood films to use IMAX for action sequences &mdash; setting a template every blockbuster since has followed."
+  },
+  {
+    heading:"the legend",
+    clue:`There are performances, and then there are <em>hauntings</em>. The actor who played the villain prepared for months in isolation, kept a diary in the character's voice, and created something the world had never seen. The Academy gave him its highest acting honour &mdash; but he was no longer alive to receive it.`,
+    q:"What award was given posthumously for this performance?",
+    opts:["BAFTA Best Actor","Golden Globe for Drama","Academy Award for Best Supporting Actor","Screen Actors Guild Award"],
+    ans:2,
+    fact:"Heath Ledger won the Oscar posthumously in 2009. Many consider it the greatest villain performance ever committed to film."
+  },
+  {
+    heading:"the moral",
+    clue:`The film's deepest cut isn't the action &mdash; it's the <em>philosophy</em>. The villain runs an experiment. He places ordinary people in an impossible situation and bets that when stripped of comfort and safety, they will abandon everything they believed. He needed them to prove that morality is a fiction. He was wrong. Barely.`,
+    q:"What does the Joker call his manipulation of people?",
+    opts:['"An audition"','"A social experiment"','"A little game"','"A test of faith"'],
+    ans:1,
+    fact:'"It\'s a social experiment" &mdash; the Joker\'s philosophy underpins every scene. He didn\'t want chaos. He wanted proof.'
+  },
+  {
+    heading:"the music",
+    clue:`Hans Zimmer built the villain's theme from a single note &mdash; two cello strings pressed together, rising unbearably in pitch. He described it as <em>"the sound of a bad idea gathering momentum."</em> It's less a melody than a feeling: dread with nowhere to go. Film students still study it. Audiences still feel it in their bones.`,
+    q:"What method did Zimmer use to create the villain's signature sound?",
+    opts:["A detuned piano","Electronic synthesis alone","Strings rubbing against each other","Reverse orchestral samples"],
+    ans:2,
+    fact:"Zimmer had 200 cellists scrape horsehair against strings &mdash; the physical embodiment of escalating dread."
+  }
+];
+
+let score=0;
+
+Q.forEach((q,i)=>{
+  const el=document.getElementById(`s${i+1}`);
+  const pips=Q.map((_,d)=>`<div class="pip ${d<i?'done':d===i?'active':''}"></div>`).join('');
+  el.innerHTML=`
+    <p class="eyebrow">clue ${i+1} of 5 &nbsp;&middot;&nbsp; ${q.heading}</p>
+    <div class="progress">${pips}</div>
+    <div class="polaroid torn" style="margin-bottom:.9rem;">
+      <div class="clue-num">${i+1}</div>
+      <p class="clue-label">the clue</p>
+      <p class="clue-body">${q.clue}</p>
+      <p class="clue-label" style="margin-bottom:.7rem">your question</p>
+      <p class="question-text">${q.q}</p>
+      <div class="options" id="o${i}">
+        ${q.opts.map((o,j)=>`<button class="opt" onclick="ans(${i},${j},this)">${o}</button>`).join('')}
+      </div>
+      <p class="fb" id="f${i}"></p>
+    </div>
+    <div class="score-bar"><span id="sc${i}">${score}</span> of 5 correct so far</div>
+    <button class="btn-ghost borderless" onclick="goTo(6)" style="font-size:0.65rem; margin-top:1.5rem; opacity:0.6;">I know the film. Let me guess. &#8594;</button>
+  `;
+});
+
+function startExperience() {
+  const audio = document.getElementById('bg-audio');
+  audio.volume = 0.3; // subtle background level
+  audio.play().catch(e => console.log("Audio play prevented by browser, but that's okay."));
+  goTo(1);
+}
+
+function goTo(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active','in'));
+  const next=document.getElementById(`s${n}`);
+  next.classList.add('active');
+  requestAnimationFrame(()=>next.classList.add('in'));
+  window.scrollTo({top:0,behavior:'smooth'});
+  for(let i=0;i<5;i++){const el=document.getElementById(`sc${i}`);if(el)el.textContent=score;}
+  const sf=document.getElementById('score6');if(sf)sf.textContent=score;
+}
+
+function ans(qi,ci,btn){
+  const q=Q[qi];
+  const btns=document.getElementById(`o${qi}`).querySelectorAll('.opt');
+  const fb=document.getElementById(`f${qi}`);
+  btns.forEach(b=>b.disabled=true);
+  if(ci===q.ans){
+    btn.classList.add('correct');score++;
+    fb.textContent='✓  '+q.fact;
+    fb.className='fb ok';
+  } else {
+    btn.classList.add('wrong');
+    btns[q.ans].classList.add('correct');
+    fb.textContent='Not quite — '+q.fact;
+    fb.className='fb no';
+  }
+  for(let i=0;i<5;i++){const el=document.getElementById(`sc${i}`);if(el)el.textContent=score;}
+  setTimeout(()=>{goTo(qi<4?qi+2:6);},2400);
+}
+
+function finalAnswer(btn,r){
+  const btns=document.getElementById('final-opts').querySelectorAll('.opt');
+  const fb=document.getElementById('final-fb');
+  btns.forEach(b=>b.disabled=true);
+  if(r==='c'){
+    btn.classList.add('correct');
+    fb.textContent='You knew all along, didn\'t you. ♡';
+    fb.className='fb ok';
+    setTimeout(()=>goTo(7),1800);
+  } else {
+    btn.classList.add('wrong');
+    fb.textContent='Look closer… the answer is written in every clue.';
+    fb.className='fb no';
+    setTimeout(()=>{btns.forEach(b=>{b.disabled=false;b.className='opt';});fb.textContent='';},1800);
+  }
+}
+
+function sayYes(){
+  burst();setTimeout(burst,700);setTimeout(burst,1500);setTimeout(burst,2200);
+  setTimeout(()=>goTo(8),900);
+}
+function reschedule() {
+  alert("No worries! The Bat-Signal will stay on. Let me know what day works for you! 🦇");
+}
+
+function burst(){
+  const s=['🖤','✦','✧','🦇','🎬','🎇'];
+  for(let i=0;i<20;i++){
+    const e=document.createElement('div');
+    e.className='celebration-burst';
+    e.textContent=s[Math.floor(Math.random()*s.length)];
+    e.style.left=`${Math.random()*100}vw`;
+    e.style.top=`${-5+Math.random()*20}vh`;
+    e.style.setProperty('--r',`${(Math.random()-.5)*720}deg`);
+    e.style.setProperty('--sx',`${(Math.random()-.5)*120}px`);
+    e.style.animationDuration=`${2+Math.random()*2}s`;
+    e.style.animationDelay=`${Math.random()*.6}s`;
+    e.style.fontSize=`${.8+Math.random()*1.6}rem`;
+    document.body.appendChild(e);
+    setTimeout(()=>e.remove(),5000);
+  }
+}
+
+/* CANVAS */
+(()=>{
+  const cv=document.getElementById('bg');
+  const cx=cv.getContext('2d');
+  let W,H,orbs=[],dust=[];
+
+  function resize(){
+    W=cv.width=window.innerWidth;
+    H=cv.height=window.innerHeight;
+    orbs=[];dust=[];
+    for(let i=0;i<22;i++){
+      orbs.push({
+        x:Math.random()*W,y:Math.random()*H,
+        r:20+Math.random()*80,
+        hue:Math.random()<.5?350:25,
+        sat:30+Math.random()*30,
+        a:.04+Math.random()*.08,
+        vx:(Math.random()-.5)*.12,vy:(Math.random()-.5)*.08,
+        t:Math.random()*Math.PI*2,speed:.003+Math.random()*.005
+      });
+    }
+    for(let i=0;i<120;i++){
+      dust.push({
+        x:Math.random()*W,y:Math.random()*H,
+        r:.3+Math.random()*.8,
+        a:.1+Math.random()*.5,
+        t:Math.random()*Math.PI*2,s:.004+Math.random()*.007
+      });
+    }
+  }
+
+  function draw(){
+    cx.clearRect(0,0,W,H);
+    const bg=cx.createRadialGradient(W*.5,H*.4,0,W*.5,H*.4,Math.max(W,H)*.8);
+    bg.addColorStop(0,'hsl(340,25%,4%)');
+    bg.addColorStop(.5,'hsl(345,30%,3%)');
+    bg.addColorStop(1,'hsl(0,0%,2%)');
+    cx.fillStyle=bg;cx.fillRect(0,0,W,H);
+    orbs.forEach(o=>{
+      o.t+=o.speed;o.x+=o.vx;o.y+=o.vy;
+      if(o.x<-o.r*2)o.x=W+o.r;if(o.x>W+o.r*2)o.x=-o.r;
+      if(o.y<-o.r*2)o.y=H+o.r;if(o.y>H+o.r*2)o.y=-o.r;
+      const pulse=o.a*(0.6+0.4*Math.sin(o.t));
+      const grad=cx.createRadialGradient(o.x,o.y,0,o.x,o.y,o.r);
+      grad.addColorStop(0,`hsla(${o.hue},${o.sat}%,35%,${pulse})`);
+      grad.addColorStop(1,'hsla(0,0%,0%,0)');
+      cx.fillStyle=grad;cx.beginPath();cx.arc(o.x,o.y,o.r,0,Math.PI*2);cx.fill();
+    });
+    dust.forEach(d=>{
+      d.t+=d.s;
+      const a=d.a*(0.5+0.5*Math.sin(d.t));
+      cx.beginPath();cx.arc(d.x,d.y,d.r,0,Math.PI*2);
+      cx.fillStyle=`rgba(220,180,170,${a})`;cx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize',resize);
+  resize();draw();
+
+  const ps=['✦','✧','·','∘','✺'];
+  for(let i=0;i<25;i++){
+    const p=document.createElement('div');
+    p.className='ember';
+    p.textContent=ps[Math.floor(Math.random()*ps.length)];
+    p.style.left=`${Math.random()*110-5}vw`;
+    p.style.setProperty('--spin',`${(Math.random()-.5)*540}deg`);
+    p.style.setProperty('--sway',`${(Math.random()-.5)*80}px`);
+    p.style.animationDuration=`${12+Math.random()*18}s`;
+    p.style.animationDelay=`${-Math.random()*30}s`;
+    p.style.fontSize=`${.6+Math.random()*1}rem`;
+    document.body.appendChild(p);
+  }
+})();
+
+/* ── COUNTDOWN ──
+   Target: next Monday 5:00 PM IST (UTC+5:30)
+*/
+(function(){
+  function getNextMonday5pmIST(){
+    const now = new Date();
+    const istOffset = 5.5 * 60 * 60 * 1000;
+    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+    const ist = new Date(utc + istOffset);
+
+    let daysUntilMonday = (1 - ist.getDay() + 7) % 7;
+    if(daysUntilMonday === 0){
+      if(ist.getHours() >= 17) daysUntilMonday = 7;
+    }
+
+    const target = new Date(ist);
+    target.setDate(ist.getDate() + daysUntilMonday);
+    target.setHours(17, 0, 0, 0);
+
+    return target.getTime() - istOffset;
+  }
+
+  const targetUTC = getNextMonday5pmIST();
+
+  function pad(n){ return String(n).padStart(2,'0'); }
+
+  function updateCountdown(){
+    const now = Date.now();
+    const diff = targetUTC - now;
+    if(diff <= 0){
+      document.getElementById('countdown-grid').style.display='none';
+      document.getElementById('cd-done').style.display='block';
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+
+    function set(id, val){
+      const el = document.getElementById(id);
+      if(el && el.textContent !== pad(val)){
+        el.textContent = pad(val);
+        el.classList.remove('tick');
+        void el.offsetWidth;
+        el.classList.add('tick');
+      }
+    }
+    set('cd-d', d); set('cd-h', h); set('cd-m', m); set('cd-s', s);
+  }
+
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  // ── CALENDAR LINKS ──
+  function formatICS(date){
+    return date.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
+  }
+
+  const start = new Date(targetUTC);
+  const end   = new Date(targetUTC + 3 * 3600000); 
+
+  const gcal = `https://calendar.google.com/calendar/render?action=TEMPLATE`
+    + `&text=Our+Dark+Knight+Date+%F0%9F%96%A4`
+    + `&dates=${formatICS(start)}/${formatICS(end)}`
+    + `&details=Same+screen.+Different+skies.+But+the+same+night+%E2%80%94+together.+%E2%99%A1`
+    + `&location=Wherever+you+are`;
+  const gcalEl = document.getElementById('gcal-link');
+  if(gcalEl) gcalEl.href = gcal;
+
+  const icsContent = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Our Date//EN',
+    'BEGIN:VEVENT',
+    `DTSTART:${formatICS(start)}`,
+    `DTEND:${formatICS(end)}`,
+    'SUMMARY:Our Dark Knight Date 🖤',
+    'DESCRIPTION:Same screen. Different skies. But the same night — together. ♡',
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ].join('\r\n');
+  const icsBlob = new Blob([icsContent], {type:'text/calendar'});
+  const icsUrl  = URL.createObjectURL(icsBlob);
+  const icalEl  = document.getElementById('ical-link');
+  if(icalEl) icalEl.href = icsUrl;
+})();
+</script>
+</body>
+</html>
